@@ -7,8 +7,6 @@ import 'package:time_controller/routes/app_router.dart';
 import 'config/theme_config.dart';
 
 Future<void> main() async {
-  // Firebase初期化
-  await Firebase.initializeApp();
   config();
   runApp(MyApp());
 }
@@ -17,15 +15,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      // debugのバーナーを出すかどうか
-      debugShowCheckedModeBanner: false,
-      // テーマの設定
-      theme: ThemeConfig.light(),
-      darkTheme: ThemeConfig.dark(),
-      themeMode: ThemeMode.system,
-      onGenerateRoute: GetIt.I<AppRouter>().router.generator,
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Placeholder();
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            // debugのバーナーを出すかどうか
+            debugShowCheckedModeBanner: false,
+            // テーマの設定
+            theme: ThemeConfig.light(),
+            darkTheme: ThemeConfig.dark(),
+            themeMode: ThemeMode.system,
+            onGenerateRoute: GetIt.I<AppRouter>().router.generator,
+          );
+        }
+        return CircularProgressIndicator();
+      },
     );
   }
 }

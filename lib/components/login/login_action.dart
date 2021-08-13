@@ -37,7 +37,7 @@ class LoginAction extends ChangeNotifier {
       );
     } catch (e) {
       print("ログインNG：${e.toString()}");
+      updateConnetingState(false);
     }
-    updateConnetingState(false);
   }
 }

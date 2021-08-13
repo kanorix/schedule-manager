@@ -2,41 +2,69 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_controller/components/calender/icalender_helper.dart';
+import 'package:time_controller/components/event/event_detail_widget.dart';
 import 'package:time_controller/components/home/home_screen.dart';
 import 'package:time_controller/components/login/login_screen.dart';
 import 'package:time_controller/components/root/root_screen.dart';
 
-class AppRouter {
+class SimpleHandler extends Handler {
+  SimpleHandler(
+    Widget? Function() handlerFunc,
+  ) : super(handlerFunc: (_, __) => handlerFunc());
+}
 
+class HandlerWithArgs<T> extends Handler {
+  HandlerWithArgs(
+    Widget? Function(T, Map<String, dynamic>) builder, {
+    Widget? Function()? orElse,
+  }) : super(
+          handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+            final args = context?.settings?.arguments as T?;
+            if (args != null) {
+              return builder(args, params);
+            }
+            return orElse == null ? Placeholder() : orElse();
+          },
+        );
+}
+
+class AppRouter {
   final FluroRouter _router;
 
-  final _rootHandler = Handler(handlerFunc: (_, Map<String, dynamic> params) {
-    return RootScreen();
+  final _rootHandler = SimpleHandler(() => RootScreen());
+  final _loginHandler = SimpleHandler(() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    // 現在のユーザーがいるならホームに飛ばす
+    return currentUser == null ? LoginScreen() : HomeScreen(user: currentUser);
   });
 
-  final _loginHandler = Handler(handlerFunc: (_, Map<String, dynamic> params) {
-    return LoginScreen();
-  });
+  final _homeHandler = HandlerWithArgs<User>(
+    (user, _) => HomeScreen(user: user),
+  );
 
-  final _homeHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-    print(params['tab'][0]);
-    final user = context?.settings?.arguments as User?;
-    if (user != null) {
-      return HomeScreen(user: user);
-    }
-    return Scaffold(body: LoginScreen());
-  });
+  final _eventDetailHandler = HandlerWithArgs<ICalenderEvent>(
+    (event, _) => EventDetailScreen(event: event),
+  );
 
-  final _notFoundHandler = Handler(handlerFunc: (_, Map<String, dynamic> params) {
-    return Scaffold(body: LoginScreen());
-  });
+  final _notFoundHandler = SimpleHandler(() => LoginScreen());
 
   AppRouter(this._router) {
     _router.notFoundHandler = _notFoundHandler;
     _router.define('/', handler: _rootHandler);
     _router.define('/login', handler: _loginHandler);
     _router.define('/home/:tab', handler: _homeHandler);
+    _router.define('/home/calender/detail', handler: _eventDetailHandler);
   }
 
   FluroRouter get router => _router;
+
+  push(BuildContext context, String path, {Object? args}) {
+    print('push >> [$path]');
+    router.navigateTo(
+      context,
+      path,
+      routeSettings: RouteSettings(arguments: args),
+    );
+  }
 }

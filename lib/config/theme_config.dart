@@ -6,7 +6,7 @@ class ThemeConfig {
   static ThemeData light() {
     return ThemeData(
       brightness: Brightness.light,
-      primarySwatch: Colors.deepOrange,
+      primarySwatch: Colors.lightGreen,
       snackBarTheme: SnackBarThemeData(
         contentTextStyle: TextStyle(
           color: Colors.white,

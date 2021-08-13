@@ -8,21 +8,22 @@ class RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, snapshot) {
+        print('this is root screen');
 
-    return Scaffold(
-      body: Center(
-        child: StreamBuilder<User?>(
-    
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (BuildContext context, snapshot) {
-            if (snapshot.hasData && (!snapshot.data!.isAnonymous)) {
-              return HomeScreen(user: snapshot.data!);
-            }
+        if ((snapshot.hasData) && (!snapshot.data!.isAnonymous)) {
+          return HomeScreen(user: snapshot.data!);
+        }
 
-            return LoginScreen();
-          },
-        ),
-      ),
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          return HomeScreen(user: currentUser);
+        }
+
+        return LoginScreen();
+      },
     );
   }
 }
