@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:time_controller/model/event.dart';
+import 'package:time_controller/model/term.dart';
 
 import 'list_action.dart';
 
@@ -38,19 +39,6 @@ class _ListWidget extends StatelessWidget {
   }
 }
 
-class Term {
-  final int id;
-  final String title;
-  final Color color;
-  Term(this.id, this.title, this.color);
-}
-
-final workTerms = [
-  Term(0, '早番', Colors.red),
-  Term(1, '遅番', Colors.blue),
-  Term(2, '休み', Colors.green),
-];
-
 class _Item extends StatelessWidget {
   final Event event;
   _Item({required this.event});
@@ -78,16 +66,22 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final action = context.read<ListAction>();
-    return ListTile(
-      subtitle: Row(
+    return Container(
+      margin: EdgeInsets.all(4),
+      child: Row(
         children: [
-          Text(formattedDate),
-          VerticalDivider(),
+          Container(
+            alignment: Alignment.center,
+            width: 60,
+            child: Text(formattedDate),
+          ),
+          Spacer(),
           button(workTerms[0], action),
           Container(width: 2),
           button(workTerms[1], action),
           Container(width: 2),
           button(workTerms[2], action),
+          Spacer(),
         ],
       ),
     );

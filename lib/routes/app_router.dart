@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_controller/components/calender/icalender_helper.dart';
-import 'package:time_controller/components/event/event_detail_widget.dart';
 import 'package:time_controller/components/home/home_screen.dart';
 import 'package:time_controller/components/login/login_screen.dart';
 import 'package:time_controller/components/root/root_screen.dart';
@@ -43,10 +41,6 @@ class AppRouter {
     (user, _) => HomeScreen(user: user),
   );
 
-  final _eventDetailHandler = HandlerWithArgs<ICalenderEvent>(
-    (event, _) => EventDetailScreen(event: event),
-  );
-
   final _notFoundHandler = SimpleHandler(() => LoginScreen());
 
   AppRouter(this._router) {
@@ -54,7 +48,6 @@ class AppRouter {
     _router.define('/', handler: _rootHandler);
     _router.define('/login', handler: _loginHandler);
     _router.define('/home/:tab', handler: _homeHandler);
-    _router.define('/home/calender/detail', handler: _eventDetailHandler);
   }
 
   FluroRouter get router => _router;

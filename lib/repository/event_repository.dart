@@ -29,6 +29,14 @@ class EventRepository {
     return snapshot.docs.map((e) => e.data()).toList();
   }
 
+  Future<Event> findByMonthAndDay(int month, int day) async {
+    final snapshot = await defaultQuery
+        .where('month', isEqualTo: month)
+        .where('day', isEqualTo: day)
+        .get();
+    return snapshot.docs.map((e) => e.data()).first;
+  }
+
   update(Event event) async {
     print(event.docId);
     if (event.docId == null) {

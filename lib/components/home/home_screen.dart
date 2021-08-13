@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 enum HomeTab {
-  // Calender,
+  Calender,
   List,
   Account,
 }
@@ -35,18 +35,18 @@ class _HomeWidget extends StatelessWidget {
   _HomeWidget({Key? key}) : super(key: key);
 
   final Map<HomeTab, HomeNavigationPair> pair = {
+    HomeTab.Calender: HomeNavigationPair(
+        item: BottomNavigationBarItem(
+          icon: const Icon(Icons.today),
+          label: 'today',
+        ),
+        builder: (_) => CalenderWidget()),
     HomeTab.List: HomeNavigationPair(
         item: BottomNavigationBarItem(
           icon: const Icon(Icons.calendar_today),
           label: 'calender',
         ),
         builder: (_) => ListWidget()),
-    // HomeTab.Calender: HomeNavigationPair(
-    //     item: BottomNavigationBarItem(
-    //       icon: const Icon(Icons.today),
-    //       label: 'today',
-    //     ),
-    //     builder: (_) => CalenderWidget()),
     HomeTab.Account: HomeNavigationPair(
         item: BottomNavigationBarItem(
           icon: const Icon(Icons.account_circle),
