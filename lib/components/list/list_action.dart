@@ -44,11 +44,19 @@ class ListAction extends ChangeNotifier {
   }
 
   void updateTerm(Event event, int termId) {
+    if (event.termId == termId) {
+      print('same!');
+      event.termId = -1;
+      termId = -1;
+    } else {
+      print('not same!');
+      event.termId = termId;
+    }
     final events = _state.events.map((e) {
       if (e.month == event.month && e.day == event.day) e.termId = termId;
       return e;
     }).toList();
-    event.termId = termId;
+
     repository.update(event);
 
     _state = _state.newState(events: events);

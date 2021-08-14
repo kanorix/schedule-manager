@@ -55,7 +55,7 @@ class _Item extends StatelessWidget {
       child: Text(term.title),
       style: (event.termId == term.id)
           ? OutlinedButton.styleFrom(
-              primary: Colors.white,
+              primary: term.background,
               backgroundColor: term.color,
               side: const BorderSide(color: Colors.black),
             )
