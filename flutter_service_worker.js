@@ -11,10 +11,10 @@ const RESOURCES = {
 "assets/NOTICES": "5e26f3119d230486049d0618ad62eb4e",
 "assets/AssetManifest.json": "a0c18a7d71b4bd0f03a6fb3876012068",
 "assets/mock_data/calender.ics": "64edba4f704e7a6a49d0e7b1cb2f12c0",
-"index.html": "02207361aa306efa3669ee33fb231dfe",
-"/": "02207361aa306efa3669ee33fb231dfe",
+"index.html": "ffda1a7278d388abf3f7e1808690fab5",
+"/": "ffda1a7278d388abf3f7e1808690fab5",
 "manifest.json": "0e498451ea7229be863b57b119215e83",
-"main.dart.js": "92b9b514b06ffe80202676a8577bae76",
+"main.dart.js": "0542ce5fb5e49d087d2627e67f4a3265",
 "version.json": "308b18473b06f70ba649435d6c4c84fe",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796"
 };
